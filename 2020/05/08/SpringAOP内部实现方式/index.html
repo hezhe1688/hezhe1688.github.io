@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Java中乐观锁与悲观锁 | Angel Blog</title>
+  <title>SpringAOP内部实现方式 | Angel Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java中乐观锁与悲观锁">
+  <meta name="description" content="SpringAOP内部实现方式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中乐观锁与悲观锁">
-<meta property="og:url" content="http://yoursite.com/2020/05/05/Java%E4%B8%AD%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81/index.html">
+<meta property="og:title" content="SpringAOP内部实现方式">
+<meta property="og:url" content="http://yoursite.com/2020/05/08/SpringAOP%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Angel Blog">
-<meta property="og:description" content="Java中乐观锁与悲观锁">
+<meta property="og:description" content="SpringAOP内部实现方式">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-05T04:00:53.805Z">
-<meta property="article:modified_time" content="2020-05-05T04:05:47.368Z">
+<meta property="article:published_time" content="2020-05-08T08:21:46.000Z">
+<meta property="article:modified_time" content="2020-05-08T08:21:46.000Z">
 <meta property="article:author" content="贺哲">
 <meta name="twitter:card" content="summary">
   
@@ -162,14 +162,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Java中乐观锁与悲观锁" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-SpringAOP内部实现方式" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java中乐观锁与悲观锁
+      SpringAOP内部实现方式
     </h1>
   
 
@@ -180,30 +180,38 @@
 		  <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
 	</span>
 
-<a href="/2020/05/05/Java%E4%B8%AD%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81/" class="archive-article-date">
-  	<time datetime="2020-05-05T04:00:53.805Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-05</time>
+<a href="/2020/05/08/SpringAOP%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2020-05-08T08:21:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-08</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Java中乐观锁与悲观锁"><a href="#Java中乐观锁与悲观锁" class="headerlink" title="Java中乐观锁与悲观锁"></a>Java中乐观锁与悲观锁</h1><a id="more"></a>
+        <h1 id="SpringAOP内部实现方式"><a href="#SpringAOP内部实现方式" class="headerlink" title="SpringAOP内部实现方式"></a>SpringAOP内部实现方式</h1><a id="more"></a>
 
-<h2 id="1、悲观锁"><a href="#1、悲观锁" class="headerlink" title="1、悲观锁"></a>1、悲观锁</h2><blockquote>
-<p>总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁（共享资源每次只给一个线程使用，其它线程阻塞，用完后再把资源转让给其它线程）。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。Java中<code>synchronized</code>和<code>ReentrantLock</code>等独占锁就是悲观锁思想的实现。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>Spring AOP构建在动态代理基础之上，因此，<strong>Spring对AOP的支持局限于方法拦截</strong>。</p>
 </blockquote>
-<h2 id="2、乐观锁"><a href="#2、乐观锁" class="headerlink" title="2、乐观锁"></a>2、乐观锁</h2><blockquote>
-<p>总是假设最好的情况，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号机制和CAS算法实现。乐观锁适用于<code>多读</code>的应用类型，这样可以提高吞吐量，像数据库提供的类似于write_condition机制，其实都是提供的乐观锁。在Java中<code>java.util.concurrent.atomic</code>包下面的原子变量类就是使用了乐观锁的一种实现方式CAS实现的。</p>
-</blockquote>
-<h2 id="3、两种锁的使用场景"><a href="#3、两种锁的使用场景" class="headerlink" title="3、两种锁的使用场景"></a>3、两种锁的使用场景</h2><blockquote>
-<p>从上面对两种锁的介绍，我们知道两种锁各有优缺点，不可认为一种好于另一种，像乐观锁适用于写比较少的情况下（多读场景），即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果是多写的情况，一般会经常产生冲突，这就会导致上层应用会不断的进行retry，这样反倒是降低了性能，所以一般多写的场景下用悲观锁就比较合适。</p>
-</blockquote>
-<h2 id="4、乐观锁常见的两种实现方式"><a href="#4、乐观锁常见的两种实现方式" class="headerlink" title="4、乐观锁常见的两种实现方式"></a>4、乐观锁常见的两种实现方式</h2><blockquote>
-<p>乐观锁一般会使用版本号机制或CAS（Compare-and-Swap，即比较并替换）算法实现。</p>
-</blockquote>
-<h2 id="5、乐观锁的缺点"><a href="#5、乐观锁的缺点" class="headerlink" title="5、乐观锁的缺点"></a>5、乐观锁的缺点</h2><blockquote>
-<p>ABA 问题是乐观锁一个常见的问题：解决通过添加版本号，每次操作之后版本号加1</p>
+<p>在Java中动态代理有两种方式：</p>
+<ul>
+<li>JDK动态代理</li>
+<li>CGLIB动态代理</li>
+</ul>
+<p>JDK动态代理的核心是InvocationHandler接口和Proxy类，如果没有实现这两个类，就使用CGLIB进行动态代理</p>
+<ul>
+<li>CGLib代理其生成的动态代理对象是目标类的子类</li>
+<li>Spring AOP<strong>默认是使用JDK动态代理</strong>，如果代理的类<strong>没有接口则会使用CGLib代理</strong>。</li>
+</ul>
+<blockquote>
+<p>那么JDK代理和CGLib代理我们该用哪个呢？？在《精通Spring4.x 企业应用开发实战》给出了建议：</p>
+<p>如果是<strong>单例的我们最好使用CGLib代理</strong>，如果是多例的我们最好使用JDK代理</p>
+<p>原因：</p>
+<ul>
+<li>JDK在创建代理对象时的性能要高于CGLib代理，而生成代理对象的运行性能却比CGLib的低。</li>
+<li>如果是单例的代理，推荐使用CGLib</li>
+</ul>
+<p>看到这里我们就应该知道什么是Spring AOP(面向切面编程)了：<strong>将相同逻辑的重复代码横向抽取出来，使用动态代理技术将这些重复代码织入到目标对象方法中，实现和原来一样的功能</strong>。这样一来，我们就在<strong>写业务时只关心业务代码</strong>，而不用关心与业务无关的代码</p>
 </blockquote>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>由于能力有限，若有错误或者不当之处，还请大家批评指正，一起学习交流！</p>
 
@@ -295,7 +303,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/05/Java%E4%B8%AD%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/08/SpringAOP%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -309,18 +317,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/05/08/SpringAOP%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/05/08/SpringBoot%E5%AE%9E%E7%8E%B0%E6%8B%A6%E6%88%AA%E5%A4%84%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          SpringAOP内部实现方式
+          SpringBoot实现拦截处理
         
       </div>
     </a>
   
   
-    <a href="/2020/05/05/Spring%20AOP%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Spring AOP深入了解</div>
+    <a href="/2020/05/05/Java%E4%B8%AD%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java中乐观锁与悲观锁</div>
       <i class="icon-circle-right"></i>
     </a>
   
